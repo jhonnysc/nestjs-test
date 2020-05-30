@@ -26,6 +26,18 @@ const USER_ERRORS = {
     message: 'EMAIL_ALREADY_IN_USE',
     code: 2000,
   },
+  FORBIDDEN_EMAIL: {
+    message: 'FORBIDDEN_EMAIL',
+    code: 2001,
+  },
+  INVALID_DOCUMENT: {
+    message: 'INVALID_DOCUMENT',
+    code: 2003,
+  },
+  INVALID_PASSWORD: {
+    message: 'INVALID_PASSWORD',
+    code: 2004,
+  },
 };
 
 const ErrorsMapper = {
