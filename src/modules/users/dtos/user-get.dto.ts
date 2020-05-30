@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import {
   IsString,
   IsNumber,
@@ -5,7 +6,6 @@ import {
   IsOptional,
   IsNotEmpty,
 } from "class-validator";
-import { Transform } from "class-transformer";
 
 export class UserGetDto {
   @IsNumber()

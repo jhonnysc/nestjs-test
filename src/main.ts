@@ -1,8 +1,10 @@
+import * as rateLimit from 'express-rate-limit';
+
 import { NestFactory } from '@nestjs/core';
+
 import { AppModule } from './app';
 import config from './config';
 
-import * as rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

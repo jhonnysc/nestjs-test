@@ -1,6 +1,9 @@
+/* eslint-disable global-require */
 import { Connection } from 'mongoose';
-import { UserSchema } from '../models';
+
 import { Provider } from '@nestjs/common/interfaces';
+
+import { UserSchema } from '../models';
 
 const userProviders: Provider[] = [];
 

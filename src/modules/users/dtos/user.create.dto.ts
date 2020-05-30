@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+
 import { Roles } from '@app/common/roles';
 
 export class CreateUserDto {

@@ -1,17 +1,11 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UsePipes,
-  ValidationPipe,
-  Get,
-  Query,
-} from "@nestjs/common";
-import { CreateUserDto, UserGetDto } from "../dtos";
-import { UserService } from "../services";
-import { Validation } from "@app/utils/pipes";
+import { Validation } from '@app/utils/pipes';
 
-@Controller("users")
+import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+
+import { CreateUserDto, UserGetDto } from '../dtos';
+import { UserService } from '../services';
+
+@Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
@@ -24,6 +18,6 @@ export class UsersController {
   @Get()
   @Validation()
   get(@Query() query: UserGetDto) {
-    return this.userService.get({ ...query, route: "/users" });
+    return this.userService.get({ ...query, route: '/users' });
   }
 }

@@ -1,12 +1,18 @@
+import { to } from 'await-to-js';
+import { plainToClass } from 'class-transformer';
+
+import { Roles } from '@app/common/roles';
+import { EmailAlreadyInUse } from '@app/utils/exceptions';
+import {
+  throwIfIsInvalidEmail,
+  throwIfIsInvalidPassword,
+} from '@app/utils/security';
+
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repository';
+
 import { CreateUserDto, UserGetDto, UserResponseDto } from '../dtos';
 import { User } from '../interfaces/user.interface';
-import { to } from 'await-to-js';
-import { Pagination } from '@app/utils/pagination/pagination';
-import { EmailAlreadyInUse } from '@app/utils/exceptions';
-import { Roles } from '@app/common/roles';
-import { plainToClass } from 'class-transformer';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UserService {
@@ -15,6 +21,9 @@ export class UserService {
   async create(user_dto: CreateUserDto): Promise<UserResponseDto> {
     let err: Error;
     let user: User;
+
+    throwIfIsInvalidEmail(user_dto.email);
+    throwIfIsInvalidPassword(user_dto.password);
 
     [err, user] = await to(
       this.userRepository.findOne({ email: user_dto.email }),

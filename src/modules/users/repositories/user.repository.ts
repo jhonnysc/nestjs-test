@@ -1,10 +1,13 @@
-import { Inject } from '@nestjs/common';
+import { ClassType } from 'class-transformer/ClassTransformer';
 import { Model, MongooseFilterQuery } from 'mongoose';
-import { User } from '../interfaces/user.interface';
-import { CreateUserDto, UserResponseDto } from '../dtos';
+
 import { paginate } from '@app/utils/pagination';
 import { IPaginationOptions } from '@app/utils/pagination/interfaces';
-import { ClassType } from 'class-transformer/ClassTransformer';
+
+import { Inject } from '@nestjs/common';
+
+import { CreateUserDto } from '../dtos';
+import { User } from '../interfaces/user.interface';
 
 export class UserRepository {
   constructor(

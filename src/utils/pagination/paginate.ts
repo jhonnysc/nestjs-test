@@ -1,8 +1,9 @@
+import { plainToClass } from 'class-transformer';
+import { ClassType } from 'class-transformer/ClassTransformer';
 import { Model, Document, MongooseFilterQuery } from 'mongoose';
+
 import { IPaginationOptions, IPaginationLinks } from './interfaces';
 import { Pagination } from './pagination';
-import { ClassType } from 'class-transformer/ClassTransformer';
-import { plainToClass } from 'class-transformer';
 
 function resolveOptions(options: IPaginationOptions): [number, number, string] {
   const { page } = options;

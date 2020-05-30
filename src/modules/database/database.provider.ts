@@ -1,6 +1,8 @@
-import { Provider } from '@nestjs/common';
 import * as mongoose from 'mongoose';
+
 import config from '@app/config';
+
+import { Provider } from '@nestjs/common';
 
 const databaseProviders: Provider[] = [];
 

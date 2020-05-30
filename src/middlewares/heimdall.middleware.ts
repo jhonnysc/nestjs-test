@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { isXSS, isNoSQLInjection, isSQLInjection } from '@app/utils/security';
 import { XssThreat, SqlThreat } from '@app/utils/exceptions';
+import { isXSS, isNoSQLInjection, isSQLInjection } from '@app/utils/security';
+
+import { Injectable, NestMiddleware } from '@nestjs/common';
 
 @Injectable()
 export class Heimdall implements NestMiddleware {

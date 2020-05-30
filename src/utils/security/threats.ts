@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 const NOSQL_PATTERNS = {
   DOLLAR_SIGN_QUOTES_COLON: new RegExp(/(\[\$\w{1,}\])|("\$\w{1,}"\:)/gm),
 };

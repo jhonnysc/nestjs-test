@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
+
 import MessagesMapper from "./messages";
 
 export class EmailAlreadyInUse extends HttpException {

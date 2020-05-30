@@ -1,3 +1,5 @@
+/* eslint-disable no-control-regex */
+/* eslint-disable no-useless-escape */
 import { InvalidEmails } from '@app/common/constants';
 import { ForbiddenEmail } from '@app/utils/exceptions';
 

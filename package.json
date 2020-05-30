@@ -42,6 +42,8 @@
     "rxjs": "^6.5.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
@@ -54,12 +56,19 @@
     "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
+    "commitizen": "^4.1.2",
+    "cross-env": "^7.0.2",
+    "cz-conventional-changelog": "^3.2.0",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^7.2.1",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-import-helpers": "^1.0.2",
     "faker": "^4.1.0",
+    "husky": "^4.2.5",
     "jest": "^25.1.0",
+    "lint-staged": "^10.2.7",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
@@ -84,6 +93,17 @@
     "moduleNameMapper": {
       "@app/(.*)$": "<rootDir>/src/$1",
       "@root/(.*)$": "<rootDir>/$1"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "cross-env NODE_ENV=development eslint --max-warnings=0 --cache \"{src,apps,libs,test}/**/*.ts\""
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
 }

@@ -1,10 +1,13 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { INestApplication } from "@nestjs/common";
-import * as request from "supertest";
-import { UserModule } from "@app/modules/users";
 import { MockType } from "@root/mocks/mock.types";
-import { UserRepository } from "@app/modules/users/repositories";
 import { internet, name } from "faker";
+import * as request from "supertest";
+
+import { UserModule } from "@app/modules/users";
+import { UserRepository } from "@app/modules/users/repositories";
+
+
+import { INestApplication } from "@nestjs/common";
+import { Test, TestingModule } from "@nestjs/testing";
 
 jest.mock("@app/modules/users/repositories");
 
