@@ -4,13 +4,24 @@ import { CreateUserDto, UserGetDto } from "../dtos";
 import { User } from "../interfaces/user.interface";
 import { to } from "await-to-js";
 import { Pagination } from "@app/utils/pagination/pagination";
+import { EmailAlreadyInUse } from "@app/utils/exceptions";
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async create(user_dto: CreateUserDto): Promise<User> {
-    const [err, user] = await to(this.userRepository.create(user_dto));
+    let err: Error;
+    let user: User;
+
+    [err, user] = await to(
+      this.userRepository.findOne({ email: user_dto.email }),
+    );
+
+    if (err) throw new InternalServerErrorException();
+    if (user) throw new EmailAlreadyInUse();
+
+    [err, user] = await to(this.userRepository.create(user_dto));
 
     if (err) throw new InternalServerErrorException();
 

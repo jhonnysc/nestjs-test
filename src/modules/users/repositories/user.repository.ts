@@ -15,6 +15,10 @@ export class UserRepository {
     return this.userModel.create(user);
   }
 
+  async findOne(query: MongooseFilterQuery<User>) {
+    return this.userModel.findOne(query);
+  }
+
   async paginate(
     options: IPaginationOptions,
     query: MongooseFilterQuery<User>,
