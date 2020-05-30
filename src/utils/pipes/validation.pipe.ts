@@ -1,4 +1,8 @@
-import { applyDecorators, UsePipes, ValidationPipe } from "@nestjs/common";
+import {
+  applyDecorators,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
 
 export function Validation() {
   return applyDecorators(
@@ -7,7 +11,6 @@ export function Validation() {
         whitelist: true,
         transform: true,
         forbidNonWhitelisted: true,
-        exceptionFactory: (errors) => errors,
       }),
     ),
   );

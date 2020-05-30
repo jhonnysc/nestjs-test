@@ -16,7 +16,7 @@ export class UsersController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @UsePipes(new ValidationPipe())
+  @Validation()
   async create(@Body() user_dto: CreateUserDto) {
     return this.userService.create(user_dto);
   }
@@ -24,6 +24,6 @@ export class UsersController {
   @Get()
   @Validation()
   get(@Query() query: UserGetDto) {
-    return this.userService.get(query);
+    return this.userService.get({ ...query, route: "/users" });
   }
 }
