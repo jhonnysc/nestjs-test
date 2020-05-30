@@ -1,8 +1,21 @@
+import { ACGuard, UseRoles } from 'nest-access-control';
+
+import { AppRequest } from '@app/common/interfaces/request';
+import { JwtAuthGuard } from '@app/modules/auth/guards';
 import { Validation } from '@app/utils/pipes';
 
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Query,
+  UseGuards,
+  Put,
+  Req,
+} from '@nestjs/common';
 
-import { CreateUserDto, UserGetDto } from '../dtos';
+import { CreateUserDto, UserGetDto, UpdateUserDto } from '../dtos';
 import { UserService } from '../services';
 
 @Controller('users')
@@ -17,7 +30,17 @@ export class UsersController {
 
   @Get()
   @Validation()
+  @UseGuards(JwtAuthGuard, ACGuard)
+  @UseRoles({ resource: 'users', action: 'read', possession: 'any' })
   get(@Query() query: UserGetDto) {
     return this.userService.get({ ...query, route: '/users' });
+  }
+
+  @Put()
+  @Validation()
+  @UseGuards(JwtAuthGuard, ACGuard)
+  @UseRoles({ resource: 'users', action: 'update', possession: 'own' })
+  updateOwn(@Body() user_dto: UpdateUserDto, @Req() request: AppRequest) {
+    return this.userService.updateOwn(user_dto, request.user);
   }
 }

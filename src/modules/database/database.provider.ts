@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'test') {
         useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useFindAndModify: false,
       }),
   });
 }

@@ -1,5 +1,5 @@
 import { ClassType } from 'class-transformer/ClassTransformer';
-import { Model, MongooseFilterQuery } from 'mongoose';
+import { Model, MongooseFilterQuery, MongooseUpdateQuery } from 'mongoose';
 
 import { paginate } from '@app/utils/pagination';
 import { IPaginationOptions } from '@app/utils/pagination/interfaces';
@@ -21,6 +21,13 @@ export class UserRepository {
 
   async findOne(query: MongooseFilterQuery<User>) {
     return this.userModel.findOne(query);
+  }
+
+  async update(
+    query: MongooseFilterQuery<User>,
+    user: MongooseUpdateQuery<User>,
+  ) {
+    return this.userModel.findOneAndUpdate(query, user, { new: true });
   }
 
   async paginate<T>(

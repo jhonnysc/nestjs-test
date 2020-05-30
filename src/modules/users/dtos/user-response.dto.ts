@@ -12,7 +12,7 @@ export class UserResponseDto {
   email: string;
 
   @Expose()
-  role: string;
+  roles: string[];
 
   @Expose()
   created_at: Date;

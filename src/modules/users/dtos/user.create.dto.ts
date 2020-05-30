@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
 
-import { Roles } from '@app/common/roles';
+import { Roles } from '@app/modules/permissions/roles';
 
 export class CreateUserDto {
   @IsString()
@@ -15,5 +15,5 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  role: Roles;
+  roles: Roles[];
 }

@@ -10,7 +10,7 @@ const UserSchema = new Schema(
   {
     name: mongooseTypes.required.string,
     email: mongooseTypes.required.string,
-    role: mongooseTypes.required.string,
+    roles: [mongooseTypes.required.string],
     password: mongooseTypes.required.string,
   },
   {
