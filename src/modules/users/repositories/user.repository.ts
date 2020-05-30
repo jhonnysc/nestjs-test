@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Model, MongooseFilterQuery } from 'mongoose';
 import { User } from '../interfaces/user.interface';
-import { CreateUserDto } from '../dtos';
+import { CreateUserDto, UserResponseDto } from '../dtos';
 import { paginate } from '@app/utils/pagination';
 import { IPaginationOptions } from '@app/utils/pagination/interfaces';
 import { ClassType } from 'class-transformer/ClassTransformer';
@@ -20,11 +20,11 @@ export class UserRepository {
     return this.userModel.findOne(query);
   }
 
-  async paginate(
+  async paginate<T>(
     options: IPaginationOptions,
     query: MongooseFilterQuery<User>,
-    dto: ClassType<unknown>,
+    dto: ClassType<T>,
   ) {
-    return paginate<User>(this.userModel, options, query, dto);
+    return paginate<User, T>(this.userModel, options, query, dto);
   }
 }

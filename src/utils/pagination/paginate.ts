@@ -12,14 +12,14 @@ function resolveOptions(options: IPaginationOptions): [number, number, string] {
   return [page, limit, route];
 }
 
-function createPaginationObject<T>(
+function createPaginationObject<T, Y>(
   items: T[],
   total_items: number,
   current_page: number,
   limit: number,
-  dto: ClassType<unknown>,
+  dto: ClassType<Y>,
   route?: string,
-) {
+): Pagination<Y> {
   const total_pages = Math.ceil(total_items / limit);
 
   const has_first_page = route;
@@ -55,12 +55,12 @@ function createPaginationObject<T>(
   );
 }
 
-async function paginateModel<T extends Document>(
+async function paginateModel<T extends Document, Y>(
   repository: Model<T>,
   options: IPaginationOptions,
   search_options: MongooseFilterQuery<T>,
-  dto: ClassType<unknown>,
-) {
+  dto: ClassType<Y>,
+): Promise<Pagination<Y>> {
   const [page, limit, route] = resolveOptions(options);
 
   if (page < 1) {
@@ -74,14 +74,14 @@ async function paginateModel<T extends Document>(
     .skip(limit * (page - 1))
     .limit(limit);
 
-  return createPaginationObject<T>(items, total, page, limit, dto, route);
+  return createPaginationObject<T, Y>(items, total, page, limit, dto, route);
 }
 
-export async function paginate<T extends Document>(
+export async function paginate<T extends Document, Y>(
   repository: Model<T>,
   options: IPaginationOptions,
   search_options: MongooseFilterQuery<T>,
-  dto: ClassType<unknown>,
-) {
-  return paginateModel<T>(repository, options, search_options, dto);
+  dto: ClassType<Y>,
+): Promise<Pagination<Y>> {
+  return paginateModel<T, Y>(repository, options, search_options, dto);
 }

@@ -41,12 +41,8 @@ export class UserService {
     if (query.email) Object.assign(where, { email: query.email });
     if (query.name) Object.assign(where, { name: query.name });
 
-    return this.userRepository.paginate(
-      {
-        limit: query.limit,
-        page: query.page,
-        route: query.route,
-      },
+    return this.userRepository.paginate<UserResponseDto>(
+      query,
       where,
       UserResponseDto,
     );
