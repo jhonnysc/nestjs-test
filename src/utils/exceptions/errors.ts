@@ -38,6 +38,10 @@ const USER_ERRORS = {
     message: 'INVALID_PASSWORD',
     code: 2004,
   },
+  INVALID_CREDENTIALS: {
+    message: 'INVALID_CREDENTIALS',
+    code: 2005,
+  },
 };
 
 const ErrorsMapper = {

@@ -4,6 +4,7 @@ import { User } from '../interfaces/user.interface';
 import { CreateUserDto } from '../dtos';
 import { paginate } from '@app/utils/pagination';
 import { IPaginationOptions } from '@app/utils/pagination/interfaces';
+import { ClassType } from 'class-transformer/ClassTransformer';
 
 export class UserRepository {
   constructor(
@@ -22,7 +23,8 @@ export class UserRepository {
   async paginate(
     options: IPaginationOptions,
     query: MongooseFilterQuery<User>,
+    dto: ClassType<unknown>,
   ) {
-    return paginate<User>(this.userModel, options, query);
+    return paginate<User>(this.userModel, options, query, dto);
   }
 }

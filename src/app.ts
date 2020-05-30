@@ -2,9 +2,10 @@ import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { DatabaseModule } from './modules/database';
 import { UserModule } from './modules/users';
 import { Heimdall } from './middlewares';
+import { AuthModule } from './modules/auth';
 
 @Module({
-  imports: [DatabaseModule, UserModule],
+  imports: [DatabaseModule, UserModule, AuthModule],
   controllers: [],
   providers: [],
 })

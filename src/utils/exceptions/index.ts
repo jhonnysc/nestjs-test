@@ -51,3 +51,9 @@ export class InvalidPassword extends HttpException {
     );
   }
 }
+
+export class InvalidCredentials extends HttpException {
+  constructor() {
+    super(ErrorsMapper.USER_ERRORS.INVALID_CREDENTIALS, HttpStatus.FORBIDDEN);
+  }
+}
