@@ -11,11 +11,11 @@
 
 This repository has already setup authentication using JWT, Basic ACL Role system, Automated Tests with mocks (we never hit the database)
 
-### Endpoints
+## Endpoints
 
 - Base URL: `http://localhost:3000/v1`
 
-#### `/users`
+### `/users`
 - `(POST)` - Create User
 ```json
 {
@@ -27,7 +27,7 @@ This repository has already setup authentication using JWT, Basic ACL Role syste
 
 - `(GET)` - List users (only admins can list users, change in the database if you want an admin permission)
 
-#### `/auth`
+### `/auth`
 - `/login (POST)`
 ```json
 {
