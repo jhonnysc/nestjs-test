@@ -1,9 +1,9 @@
-import { plainToClass } from 'class-transformer';
-import { ClassType } from 'class-transformer/ClassTransformer';
-import { Model, Document, MongooseFilterQuery } from 'mongoose';
+import { plainToClass } from "class-transformer";
+import { ClassType } from "class-transformer/ClassTransformer";
+import { Model, Document, MongooseFilterQuery } from "mongoose";
 
-import { IPaginationOptions, IPaginationLinks } from './interfaces';
-import { Pagination } from './pagination';
+import { IPaginationOptions, IPaginationLinks } from "./interfaces";
+import { Pagination } from "./pagination";
 
 function resolveOptions(options: IPaginationOptions): [number, number, string] {
   const { page } = options;
@@ -28,22 +28,22 @@ function createPaginationObject<T, Y>(
   const has_next_page = route && current_page < total_pages;
   const has_last_page = route;
 
-  const symbol = route && new RegExp(/\?/).test(route) ? '&' : '?';
+  const symbol = route && new RegExp(/\?/).test(route) ? "&" : "?";
 
   const routes: IPaginationLinks = {
-    first: has_first_page ? `${route}${symbol}limit=${limit}` : '',
+    first: has_first_page ? `${route}${symbol}limit=${limit}` : "",
     previous: has_previous_page
       ? `${route}${symbol}page=${current_page - 1}&limit=${limit}`
-      : '',
+      : "",
     next: has_next_page
       ? `${route}${symbol}page=${current_page + 1}&limit=${limit}`
-      : '',
+      : "",
     last: has_last_page
       ? `${route}${symbol}page=${total_pages}&limit=${limit}`
-      : '',
+      : "",
   };
 
-  return new Pagination(
+  return new Pagination<Y>(
     plainToClass(dto, items),
     {
       total_items,
