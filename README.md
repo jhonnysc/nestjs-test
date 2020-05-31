@@ -66,8 +66,6 @@ $ yarn run test
 $ yarn run test:cov
 ```
 
-## Support
-
 
 ## Stay in touch
 
