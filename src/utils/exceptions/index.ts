@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from "@nestjs/common";
 
-import ErrorsMapper from './errors';
+import ErrorsMapper from "./errors";
 
 export class EmailAlreadyInUse extends HttpException {
   constructor() {
@@ -55,6 +55,9 @@ export class InvalidPassword extends HttpException {
 
 export class InvalidCredentials extends HttpException {
   constructor() {
-    super(ErrorsMapper.USER_ERRORS.INVALID_CREDENTIALS, HttpStatus.FORBIDDEN);
+    super(
+      ErrorsMapper.USER_ERRORS.INVALID_CREDENTIALS,
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 }
