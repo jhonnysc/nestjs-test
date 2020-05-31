@@ -1,27 +1,28 @@
-import { MockType } from "@root/mocks/mock.types";
-import { internet, name } from "faker";
-import * as request from "supertest";
+import { MockType } from '@root/mocks/mock.types';
+import { internet, name } from 'faker';
+import * as request from 'supertest';
 
-import { UserModule } from "@app/modules/users";
-import { UserRepository } from "@app/modules/users/repositories";
+import { RolesModule } from '@app/modules/permissions';
+import { UserModule } from '@app/modules/users';
+import { UserRepository } from '@app/modules/users/repositories';
 
+import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 
-import { INestApplication } from "@nestjs/common";
-import { Test, TestingModule } from "@nestjs/testing";
+jest.mock('@app/modules/users/repositories');
 
-jest.mock("@app/modules/users/repositories");
-
-describe("AppController (e2e)", () => {
+describe('User Tests (e2e)', () => {
   let app: INestApplication;
   let userRepository: MockType<UserRepository>;
   const user = {
     name: name.firstName(),
     email: internet.email(),
+    password: 'Safe@Password123',
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UserModule],
+      imports: [UserModule, RolesModule],
     }).compile();
 
     app = module.createNestApplication();
@@ -30,17 +31,17 @@ describe("AppController (e2e)", () => {
     await app.init();
   });
 
-  it("/Should create user", () => {
+  it('/Should create user', () => {
     userRepository.findOne.mockReturnValueOnce(
-      new Promise((resolve) => resolve(null)),
+      new Promise(resolve => resolve(null)),
     );
 
     userRepository.create.mockReturnValueOnce(
-      new Promise((resolve) => resolve(user)),
+      new Promise(resolve => resolve(user)),
     );
 
     return request(app.getHttpServer())
-      .post("/users")
+      .post('/users')
       .send(user)
       .expect(201)
       .expect(({ body }) => {
@@ -49,12 +50,12 @@ describe("AppController (e2e)", () => {
       });
   });
 
-  it("/Should deny create user with dupe email", () => {
+  it('/Should deny create user with dupe email', () => {
     userRepository.findOne.mockReturnValueOnce(
-      new Promise((resolve) => resolve(user)),
+      new Promise(resolve => resolve(user)),
     );
     return request(app.getHttpServer())
-      .post("/users")
+      .post('/users')
       .send(user)
       .expect(422)
       .expect(({ body }) => expect(body.code).toEqual(2000));

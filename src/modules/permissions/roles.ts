@@ -8,7 +8,7 @@ export enum Roles {
 export const roles: RolesBuilder = new RolesBuilder();
 
 roles
-  .grant(Roles.USER) // switch to another role without breaking the chain
+  .grant(Roles.USER)
   .updateOwn('users')
   .readOwn('users')
   .grant(Roles.ADMIN) // define new or modify existing role. also takes an array.

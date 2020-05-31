@@ -1,5 +1,6 @@
 import { createCipheriv, createDecipheriv } from 'crypto';
-import config from 'src/config';
+
+import config from '@app/config';
 
 export const encrypt = (text: string) => {
   const iv = Buffer.from(config.encryption.iv, 'hex');
