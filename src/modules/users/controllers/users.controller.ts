@@ -1,7 +1,6 @@
 import { UserPaginationDto } from '@app/common/constants/success.response.dto';
 import { ApiDocResponses } from '@app/common/decorators';
 import { AppRequest } from '@app/common/interfaces/request';
-import { Pagination } from '@app/utils/pagination/pagination';
 import { Validation } from '@app/utils/pipes';
 
 import {
