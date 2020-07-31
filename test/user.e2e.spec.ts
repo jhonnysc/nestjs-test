@@ -84,7 +84,7 @@ describe('User (GET) (e2e)', () => {
     await app.init();
   });
 
-  it('/Admin should bring users with pagination', () => {
+  it('/Should bring users with pagination', () => {
     userRepository.paginate.mockReturnValueOnce(
       new Promise(resolve =>
         resolve({
