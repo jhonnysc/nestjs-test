@@ -1,5 +1,4 @@
 import { AppRequest } from '@app/common/interfaces/request';
-import { PermissionGuard } from '@app/modules/permissions/decorators';
 import { Validation } from '@app/utils/pipes';
 
 import {
@@ -20,7 +19,7 @@ import { UserParamDto } from '../dtos/user.param.dto';
 import { UserService } from '../services';
 
 @Controller('developers')
-export class UsersControllerPerm {
+export class UsersController {
   constructor(private readonly userService: UserService) {}
 
   @Post()

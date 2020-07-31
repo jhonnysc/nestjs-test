@@ -20,7 +20,7 @@ import { UserParamDto } from '../dtos/user.param.dto';
 import { UserService } from '../services';
 
 @Controller('perms/developers')
-export class UsersController {
+export class UsersControllerPerms {
   constructor(private readonly userService: UserService) {}
 
   @Post()

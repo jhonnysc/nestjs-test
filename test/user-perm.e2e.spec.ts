@@ -1,19 +1,22 @@
 import { MockType } from '@root/mocks/mock.types';
+import { internet, name } from 'faker';
 import { Types } from 'mongoose';
 import * as request from 'supertest';
 
 import { AuthModule } from '@app/modules/auth';
+import { Token } from '@app/modules/auth/interfaces/index.';
 import { RolesModule } from '@app/modules/permissions';
 import { Roles } from '@app/modules/permissions/roles';
 import { UserModule } from '@app/modules/users';
 import { UserRepository } from '@app/modules/users/repositories';
 
 import { INestApplication } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
 jest.mock('@app/modules/users/repositories');
 
-describe('User Create (POST) (e2e)', () => {
+describe('User Create (POST) (e2e) with Permissions', () => {
   let app: INestApplication;
   let userRepository: MockType<UserRepository>;
   const user = {
@@ -48,7 +51,7 @@ describe('User Create (POST) (e2e)', () => {
     );
 
     return request(app.getHttpServer())
-      .post('/developers')
+      .post('/perms/developers')
       .send(user)
       .expect(201)
       .expect(({ body }) => {
@@ -62,16 +65,44 @@ describe('User Create (POST) (e2e)', () => {
       new Promise(resolve => resolve(user)),
     );
     return request(app.getHttpServer())
-      .post('/developers')
+      .post('/perms/developers')
       .send(user)
       .expect(422)
       .expect(({ body }) => expect(body.code).toEqual(2000));
   });
 });
 
-describe('User (GET) (e2e)', () => {
+describe('User (GET) (e2e) with Permissions', () => {
   let app: INestApplication;
   let userRepository: MockType<UserRepository>;
+  let jwtService: JwtService;
+  let admin_token: string;
+  let user_token: string;
+  const admin_user = {
+    name: name.firstName(),
+    email: internet.email(),
+    password: 'Safe@Password123',
+    roles: [Roles.ADMIN],
+  };
+
+  const user = {
+    name: name.firstName(),
+    email: internet.email(),
+    password: 'Safe@Password123',
+    roles: [Roles.USER],
+  };
+
+  const admin_payload: Token = {
+    email: admin_user.email,
+    roles: admin_user.roles,
+    user_id: Types.ObjectId().toHexString(),
+  };
+
+  const user_payload: Token = {
+    email: user.email,
+    roles: user.roles,
+    user_id: Types.ObjectId().toHexString(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -81,7 +112,19 @@ describe('User (GET) (e2e)', () => {
     app = module.createNestApplication();
     userRepository = module.get(UserRepository);
 
+    jwtService = module.get(JwtService);
+
+    admin_token = jwtService.sign(admin_payload);
+    user_token = jwtService.sign(user_payload);
+
     await app.init();
+  });
+
+  it('/Should not bring users without valid token', () => {
+    return request(app.getHttpServer())
+      .get('/perms/developers')
+      .set('authorization', 'invalid-token')
+      .expect(401);
   });
 
   it('/Admin should bring users with pagination', () => {
@@ -107,7 +150,8 @@ describe('User (GET) (e2e)', () => {
     );
 
     return request(app.getHttpServer())
-      .get('/developers')
+      .get('/perms/developers')
+      .set('authorization', `Bearer ${admin_token}`)
       .expect(200)
       .expect(({ body }) => {
         expect(body.items).toBeDefined();
@@ -115,11 +159,46 @@ describe('User (GET) (e2e)', () => {
         expect(body.links).toBeDefined();
       });
   });
+
+  it('/User should not bring users', () => {
+    return request(app.getHttpServer())
+      .get('/perms/developers')
+      .set('authorization', `Bearer ${user_token}`)
+      .expect(403);
+  });
 });
 
-describe('User (PUT) (e2e)', () => {
+describe('User (PUT) (e2e) with Permissions', () => {
   let app: INestApplication;
   let userRepository: MockType<UserRepository>;
+  let jwtService: JwtService;
+  let admin_token: string;
+  let user_token: string;
+  const admin_user = {
+    name: name.firstName(),
+    email: internet.email(),
+    password: 'Safe@Password123',
+    roles: [Roles.ADMIN],
+  };
+
+  const user = {
+    name: name.firstName(),
+    email: internet.email(),
+    password: 'Safe@Password123',
+    roles: [Roles.USER],
+  };
+
+  const admin_payload: Token = {
+    email: admin_user.email,
+    roles: admin_user.roles,
+    user_id: Types.ObjectId().toHexString(),
+  };
+
+  const user_payload: Token = {
+    email: user.email,
+    roles: user.roles,
+    user_id: Types.ObjectId().toHexString(),
+  };
 
   const update_payload = {
     name: 'Jhonny',
@@ -138,7 +217,30 @@ describe('User (PUT) (e2e)', () => {
     app = module.createNestApplication();
     userRepository = module.get(UserRepository);
 
+    jwtService = module.get(JwtService);
+
+    admin_token = jwtService.sign(admin_payload);
+    user_token = jwtService.sign(user_payload);
+
     await app.init();
+  });
+
+  it('/Should not bring users without valid token', () => {
+    return request(app.getHttpServer())
+      .get('/perms/developers')
+      .set('authorization', 'invalid-token')
+      .expect(401);
+  });
+
+  it('/Should deny update user without perms', () => {
+    userRepository.update.mockReturnValueOnce(
+      new Promise(resolve => resolve({ _id: 1 })),
+    );
+    return request(app.getHttpServer())
+      .put(`/perms/developers/${Types.ObjectId()}`)
+      .send(update_payload)
+      .set('authorization', `Bearer ${user_token}`)
+      .expect(403);
   });
 
   it('/Should update user', () => {
@@ -146,9 +248,20 @@ describe('User (PUT) (e2e)', () => {
       new Promise(resolve => resolve({ _id: 1 })),
     );
     return request(app.getHttpServer())
-      .put(`/developers/${Types.ObjectId()}`)
+      .put(`/perms/developers/${Types.ObjectId()}`)
       .send(update_payload)
+      .set('authorization', `Bearer ${admin_token}`)
       .expect(200);
+  });
+
+  it('/Should deny getting user without perm', () => {
+    userRepository.update.mockReturnValueOnce(
+      new Promise(resolve => resolve({ _id: 1 })),
+    );
+    return request(app.getHttpServer())
+      .get(`/perms/developers/${Types.ObjectId()}`)
+      .set('authorization', `Bearer ${user_token}`)
+      .expect(403);
   });
 
   it('/Should get user', () => {
@@ -156,8 +269,16 @@ describe('User (PUT) (e2e)', () => {
       new Promise(resolve => resolve({ _id: 1 })),
     );
     return request(app.getHttpServer())
-      .get(`/developers/${Types.ObjectId()}`)
+      .get(`/perms/developers/${Types.ObjectId()}`)
+      .set('authorization', `Bearer ${admin_token}`)
       .expect(200);
+  });
+
+  it('/Should deny deleting user without perm', () => {
+    return request(app.getHttpServer())
+      .delete(`/perms/developers/${Types.ObjectId()}`)
+      .set('authorization', `Bearer ${user_token}`)
+      .expect(403);
   });
 
   it('/Should delete user', () => {
@@ -165,7 +286,8 @@ describe('User (PUT) (e2e)', () => {
       new Promise(resolve => resolve({ _id: 1 })),
     );
     return request(app.getHttpServer())
-      .delete(`/developers/${Types.ObjectId()}`)
+      .delete(`/perms/developers/${Types.ObjectId()}`)
+      .set('authorization', `Bearer ${admin_token}`)
       .expect(204);
   });
 });
