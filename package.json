@@ -100,11 +100,5 @@
     "*.{js,ts}": [
       "cross-env NODE_ENV=development eslint --max-warnings=0 --cache \"{src,apps,libs,test}/**/*.ts\""
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }

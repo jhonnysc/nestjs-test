@@ -104,3 +104,12 @@ export class BadRequest extends HttpException {
     );
   }
 }
+
+export class UserNotFound extends HttpException {
+  constructor() {
+    super(
+      ErrorsMapper.USER_ERRORS.USER_NOT_FOUND,
+      HttpStatus.NOT_FOUND,
+    );
+  }
+}

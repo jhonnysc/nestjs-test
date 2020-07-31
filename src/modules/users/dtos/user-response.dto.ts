@@ -1,4 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose } from "class-transformer";
 
 @Exclude()
 export class UserResponseDto {
@@ -15,8 +15,20 @@ export class UserResponseDto {
   roles: string[];
 
   @Expose()
-  created_at: Date;
+  hobby: string;
 
   @Expose()
-  updated_at: Date;
+  dayOfBirth: string;
+
+  @Expose()
+  age: number;
+
+  @Expose()
+  sex: string;
+
+  @Expose()
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }
