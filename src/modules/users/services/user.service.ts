@@ -1,24 +1,24 @@
-import { to } from 'await-to-js';
-import { plainToClass } from 'class-transformer';
+import { to } from "await-to-js";
+import { plainToClass } from "class-transformer";
 
-import { Token } from '@app/modules/auth/interfaces/index.';
-import { Roles } from '@app/modules/permissions/roles';
-import { EmailAlreadyInUse } from '@app/utils/exceptions';
+import { Token } from "@app/modules/auth/interfaces/index.";
+import { Roles } from "@app/modules/permissions/roles";
+import { EmailAlreadyInUse } from "@app/utils/exceptions";
 import {
   throwIfIsInvalidEmail,
   throwIfIsInvalidPassword,
-} from '@app/utils/security';
+} from "@app/utils/security";
 
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 
 import {
   CreateUserDto,
   UserGetDto,
   UserResponseDto,
   UpdateUserDto,
-} from '../dtos';
-import { User } from '../interfaces/user.interface';
-import { UserRepository } from '../repositories/user.repository';
+} from "../dtos";
+import { User } from "../interfaces/user.interface";
+import { UserRepository } from "../repositories/user.repository";
 
 @Injectable()
 export class UserService {
@@ -63,10 +63,12 @@ export class UserService {
 
   async get(query: UserGetDto) {
     const where = {};
-    if (query.email)
-      Object.assign(where, { email: { $regex: query.email, $options: 'i' } });
-    if (query.name)
-      Object.assign(where, { name: { $regex: query.name, $options: 'i' } });
+    if (query.email) {
+      Object.assign(where, { email: { $regex: query.email, $options: "i" } });
+    }
+    if (query.name) {
+      Object.assign(where, { name: { $regex: query.name, $options: "i" } });
+    }
 
     return this.userRepository.paginate<UserResponseDto>(
       query,
