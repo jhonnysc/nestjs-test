@@ -2,8 +2,8 @@ import {
   IsString,
   IsNotEmpty,
   IsEmail,
-  Matches,
   IsNumber,
+  IsDateString,
 } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
@@ -29,7 +29,7 @@ export class UpdateUserDto {
   @ApiProperty()
   hobby: string;
 
-  @Matches(/^\d{4}\/\d{2}\/\d{2}$/)
+  @IsDateString()
   @IsNotEmpty()
   @ApiProperty()
   dayOfBirth: Date;

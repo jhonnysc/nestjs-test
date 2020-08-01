@@ -25,16 +25,19 @@ export class UserGetDto {
   page = 1;
 
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
   @ApiPropertyOptional()
   email?: string;
 
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
   @ApiPropertyOptional()
   name?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  sort_by?: string;
 
   route?: string;
 }

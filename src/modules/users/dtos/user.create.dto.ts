@@ -3,13 +3,13 @@ import {
   IsNotEmpty,
   IsEmail,
   IsNumber,
-  Matches,
   IsEnum,
-} from 'class-validator';
+  IsDateString,
+} from "class-validator";
 
-import { Roles } from '@app/modules/permissions/roles';
+import { Roles } from "@app/modules/permissions/roles";
 
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto {
   @IsString()
@@ -37,7 +37,7 @@ export class CreateUserDto {
   @ApiProperty()
   hobby: string;
 
-  @Matches(/^\d{4}\/\d{2}\/\d{2}$/)
+  @IsDateString()
   @IsNotEmpty()
   @ApiProperty()
   dayOfBirth: Date;
