@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema } from "mongoose";
 
 const mongooseTypes = {
   required: {
@@ -14,6 +14,15 @@ const mongooseTypes = {
       type: Schema.Types.ObjectId,
       required: true,
     },
+    date: {
+      type: Date,
+      required: true,
+    },
+    enum: (enums: string[]) => ({
+      type: String,
+      enum: enums,
+      required: true,
+    }),
   },
   not_required: {
     string: {
@@ -28,6 +37,15 @@ const mongooseTypes = {
       type: Schema.Types.ObjectId,
       default: null,
     },
+    date: {
+      type: Date,
+      default: null,
+    },
+    enum: (enums: string[]) => ({
+      type: String,
+      enum: enums,
+      default: null,
+    }),
   },
 };
 

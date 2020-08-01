@@ -11,6 +11,8 @@ export interface IPaginationOptions {
    * a babasesic route for generating links (i.e., WITHOUT query params)
    */
   route?: string;
+
+  sort_by?: string;
 }
 
 export interface IPaginationMeta {

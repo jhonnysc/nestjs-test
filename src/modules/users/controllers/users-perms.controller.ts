@@ -1,6 +1,7 @@
 import { UserPaginationDto } from '@app/common/constants/success.response.dto';
 import { ApiDocResponses } from '@app/common/decorators';
 import { AppRequest } from '@app/common/interfaces/request';
+import { PermissionGuard } from '@app/modules/permissions/decorators';
 import { Validation } from '@app/utils/pipes';
 
 import {
@@ -20,6 +21,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiNoContentResponse,
+  ApiHeader,
 } from '@nestjs/swagger';
 
 import {
@@ -31,9 +33,13 @@ import {
 import { UserParamDto } from '../dtos/user.param.dto';
 import { UserService } from '../services';
 
-@ApiTags('Developers')
-@Controller('developers')
-export class UsersController {
+@ApiHeader({
+  name: 'authorization',
+  description: 'Bearer Token',
+})
+@ApiTags('Developers with Permission')
+@Controller('perms/developers')
+export class UsersControllerPerms {
   constructor(private readonly userService: UserService) {}
 
   @ApiCreatedResponse({ type: UserResponseDto })
@@ -48,6 +54,7 @@ export class UsersController {
   @ApiDocResponses()
   @Get()
   @Validation()
+  @PermissionGuard('users', 'read', 'any')
   get(@Query() query: UserGetDto) {
     return this.userService.get({ ...query, route: '/developers' });
   }
@@ -56,6 +63,7 @@ export class UsersController {
   @ApiDocResponses()
   @Put()
   @Validation()
+  @PermissionGuard('users', 'update', 'own')
   updateOwn(
     @Body() user_dto: UpdateUserDto,
     @Req() request: Partial<AppRequest>,
@@ -67,6 +75,7 @@ export class UsersController {
   @ApiDocResponses()
   @Put('/:id')
   @Validation()
+  @PermissionGuard('users', 'update', 'any')
   updateUser(@Body() user_dto: UpdateUserDto, @Param() { id }: UserParamDto) {
     return this.userService.updateAny(user_dto, id);
   }
@@ -75,6 +84,7 @@ export class UsersController {
   @ApiDocResponses()
   @Get('/:id')
   @Validation()
+  @PermissionGuard('users', 'update', 'any')
   getAnyUser(@Param() { id }: UserParamDto) {
     return this.userService.getAnyUser(id);
   }
@@ -84,6 +94,7 @@ export class UsersController {
   @Delete('/:id')
   @Validation()
   @HttpCode(204)
+  @PermissionGuard('users', 'update', 'any')
   deleteAnyUser(@Param() { id }: UserParamDto) {
     return this.userService.deleteAnyUser(id);
   }

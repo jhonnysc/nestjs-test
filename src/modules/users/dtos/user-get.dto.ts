@@ -1,34 +1,43 @@
-import { Transform } from "class-transformer";
+import { Transform } from 'class-transformer';
 import {
   IsString,
   IsNumber,
   Max,
   IsOptional,
   IsNotEmpty,
-} from "class-validator";
+} from 'class-validator';
+
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UserGetDto {
   @IsNumber()
   @Max(1000)
   @IsOptional()
-  @Transform((value) => parseInt(value, 10))
+  @ApiPropertyOptional({ type: Number })
+  @Transform(value => parseInt(value, 10))
   limit = 10;
 
   @IsNumber()
   @IsNotEmpty()
   @IsOptional()
-  @Transform((value) => parseInt(value, 10))
+  @ApiPropertyOptional({ type: Number })
+  @Transform(value => parseInt(value, 10))
   page = 1;
 
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
+  @ApiPropertyOptional()
   email?: string;
 
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
+  @ApiPropertyOptional()
   name?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  sort_by?: string;
 
   route?: string;
 }
