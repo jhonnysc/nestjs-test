@@ -1,1 +1,1 @@
-export * from './heimdall.middleware';
+export * from "./heimdal.middleware";

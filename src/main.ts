@@ -1,16 +1,25 @@
-import * as rateLimit from "express-rate-limit";
-import * as helmet from "helmet";
+import * as rateLimit from 'express-rate-limit';
+import * as helmet from 'helmet';
 
-import { NestFactory, HttpAdapterHost } from "@nestjs/core";
+import { NestFactory, HttpAdapterHost } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { AppModule } from "./app";
-import config from "./config";
-import { AllExceptionsFilter } from "./utils/exceptions/filter";
+import { AppModule } from './app';
+import config from './config';
+import { AllExceptionsFilter } from './utils/exceptions/filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix("/v1");
+  app.setGlobalPrefix('/v1');
 
+  const options = new DocumentBuilder()
+    .setTitle('API Docs')
+    .setDescription('This is the docs :)')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('api', app, document);
   // Secutiry Modules
   app.use(
     rateLimit({

@@ -53,6 +53,10 @@ const USER_ERRORS = {
     message: "INVALID_CREDENTIALS",
     code: 2005,
   },
+  USER_NOT_FOUND: {
+    message: "USER_NOT_FOUND",
+    code: 2006,
+  },
 };
 
 const ErrorsMapper = {

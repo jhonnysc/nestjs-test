@@ -1,18 +1,17 @@
-import { ClassType } from 'class-transformer/ClassTransformer';
-import { Model, MongooseFilterQuery, MongooseUpdateQuery } from 'mongoose';
+import { ClassType } from "class-transformer/ClassTransformer";
+import { Model, MongooseFilterQuery, MongooseUpdateQuery } from "mongoose";
 
-import { paginate } from '@app/utils/pagination';
-import { IPaginationOptions } from '@app/utils/pagination/interfaces';
+import { paginate } from "@app/utils/pagination";
+import { IPaginationOptions } from "@app/utils/pagination/interfaces";
 
-import { Inject } from '@nestjs/common';
+import { Inject } from "@nestjs/common";
 
-import { CreateUserDto } from '../dtos';
-import { User } from '../interfaces/user.interface';
+import { CreateUserDto } from "../dtos";
+import { User } from "../interfaces/user.interface";
 
 export class UserRepository {
   constructor(
-    @Inject('USER_MODEL')
-    private readonly userModel: Model<User>,
+    @Inject("USER_MODEL") private readonly userModel: Model<User>,
   ) {}
 
   async create(user: CreateUserDto) {
@@ -21,6 +20,10 @@ export class UserRepository {
 
   async findOne(query: MongooseFilterQuery<User>) {
     return this.userModel.findOne(query);
+  }
+
+  async deleteOne(query: MongooseFilterQuery<User>) {
+    return this.userModel.deleteOne(query);
   }
 
   async update(
