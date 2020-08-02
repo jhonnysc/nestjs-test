@@ -87,4 +87,10 @@ export class UsersController {
   deleteAnyUser(@Param() { id }: UserParamDto) {
     return this.userService.deleteAnyUser(id);
   }
+
+  @Post('auto')
+  @Validation()
+  insertUsers(@Query('quantity') quantity: number) {
+    return this.userService.insertUsers(quantity);
+  }
 }

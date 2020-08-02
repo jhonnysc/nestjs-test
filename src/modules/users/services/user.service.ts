@@ -1,8 +1,10 @@
 import { to } from 'await-to-js';
 import { plainToClass } from 'class-transformer';
+import * as faker from 'faker';
 import { Types } from 'mongoose';
 
 import { Token } from '@app/modules/auth/interfaces/index.';
+import { Roles } from '@app/modules/permissions/roles';
 import { EmailAlreadyInUse, UserNotFound } from '@app/utils/exceptions';
 import {
   throwIfIsInvalidEmail,
@@ -81,6 +83,25 @@ export class UserService {
     await this.userRepository.deleteOne({ _id: id }).catch(() => {
       throw new InternalServerErrorException();
     });
+  }
+
+  async insertUsers(quantity: number) {
+    const promises = [];
+    for (let i = 0; i < quantity; i += 1) {
+      promises.push(
+        this.userRepository.create({
+          name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+          sex: faker.random.arrayElement(['Male', 'Female']),
+          age: faker.random.number(60),
+          hobby: faker.random.word(),
+          dayOfBirth: faker.date.recent(),
+          email: faker.internet.email(),
+          roles: [Roles.USER],
+          password: faker.internet.password(),
+        }),
+      );
+    }
+    await Promise.all(promises);
   }
 
   async get(query: UserGetDto) {
